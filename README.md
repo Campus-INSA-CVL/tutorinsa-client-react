@@ -29,7 +29,7 @@ rest-client}** : fetcher de l'API
 ## Procédure pour démarer le serveur en développement : 
 
 ```bash
-cd tutorinsa-client 
+cd tutorinsa-client-react
 npm install
 npm start
 ```
