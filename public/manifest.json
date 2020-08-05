@@ -1,0 +1,16 @@
+{
+    "short_name": "Tutor'INSA - Centre Val de Loire",
+    "name": "Plateforme de tutorat de l'INSA Centre Val de Loire",
+    "icons": [
+        {
+            "src": "tutorinsa.favicon.ico",
+            "sizes": "192x192",
+            "type": "image/ico",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "linear-gradient(180deg,#4e73df 10%,#224abe 100%)"
+}
