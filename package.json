@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Web Interface of TutorINSA, an association whose aim is to give tutoring courses to students",
     "private": true,
-    "homepage": "http://spicytelescope.github.io/",
+    "homepage": "http://spicytelescope.github.io/tutorinsa-client-react",
     "keywords": [
         "insa cvl",
         "tutorinsa",
