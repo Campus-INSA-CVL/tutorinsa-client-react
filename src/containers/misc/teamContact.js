@@ -39,7 +39,7 @@ const TeamInfo = [{
 
     {
         lastname: "Béziaud",
-        firstname: "Esteban",
+        firstname: "Jordan",
         job: "Développeur de l'interface",
         social_networks: [{
                 name: "Facebook",
