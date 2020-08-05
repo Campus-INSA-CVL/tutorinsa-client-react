@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Web Interface of TutorINSA, an association whose aim is to give tutoring courses to students",
     "private": true,
-    "homepage": "https://campus-insa-cvl.github.io/tutorinsa-client-react/",
+    "homepage": "https://campus-insa-cvl.github.io/",
     "keywords": [
         "insa cvl",
         "tutorinsa",

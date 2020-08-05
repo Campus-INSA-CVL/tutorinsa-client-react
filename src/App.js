@@ -35,11 +35,12 @@ import {
     Dialog,
     DialogContent,
 } from '@material-ui/core'
-export const AppTheme = (checkTheme) => createMuiTheme({
-    palette: {
-        type: checkTheme ? checkTheme : 'light',
-    },
-})
+export const AppTheme = (checkTheme) =>
+    createMuiTheme({
+        palette: {
+            type: checkTheme ? checkTheme : 'light',
+        },
+    })
 
 export default function App(props) {
     const { authState, dispatchAuth } = useContext(AuthContext)
@@ -49,7 +50,7 @@ export default function App(props) {
 
     let location = useLocation()
     const NO_RENDERING_BARS = ['/login', '/signup', '/passwordReset']
-    const NO_REDIRECT_LINKS = [...NO_RENDERING_BARS, '/', '/verify', '/reset', '/about']
+    const PROTECTED_ROUTES = ['/help', '/profil', '/posts', '/calendar']
 
     const [openNotifAuth, setNotifAuth] = useState(false)
     const [redirect, setRedirect] = useState(false)
@@ -101,7 +102,7 @@ export default function App(props) {
         //error handling
         if (errorReLog) {
             dispatchAuth({ type: 'AUTH_FAILED' })
-            if (!NO_REDIRECT_LINKS.includes(location.pathname)) {
+            if (PROTECTED_ROUTES.includes(location.pathname)) {
                 alert(
                     "Vous n'êtes pas authentifié ! Vous allez être redirigé vers la page d'acceuil"
                 )
@@ -167,7 +168,9 @@ export default function App(props) {
     if (redirect) return <Redirect to="/" />
     else
         return (
-            <ThemeProvider theme={responsiveFontSizes(AppTheme(userData?.appTheme))}>
+            <ThemeProvider
+                theme={responsiveFontSizes(AppTheme(userData?.appTheme))}
+            >
                 <Paper
                     style={{
                         height: '100%',
