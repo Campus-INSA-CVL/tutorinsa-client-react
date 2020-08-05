@@ -49,7 +49,7 @@ export default function App(props) {
 
     let location = useLocation()
     const NO_RENDERING_BARS = ['/login', '/signup', '/passwordReset']
-    const NO_REDIRECT_LINKS = [...NO_RENDERING_BARS, '/', '/verify', '/reset']
+    const NO_REDIRECT_LINKS = [...NO_RENDERING_BARS, '/', '/verify', '/reset', '/about']
 
     const [openNotifAuth, setNotifAuth] = useState(false)
     const [redirect, setRedirect] = useState(false)
