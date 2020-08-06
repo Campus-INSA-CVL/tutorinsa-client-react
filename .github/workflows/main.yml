@@ -20,7 +20,4 @@ jobs:
         env:
           CI: false
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
+        run: gh-pages -d build
