@@ -28,7 +28,7 @@ ReactDOM.render(
                             <UserCrProvider>
                                 <ApiProvider>
                                     <ThemeProvider>
-                                        <BrowserRouter>
+                                        <BrowserRouter basename={process.env.PUBLIC_URL}>
                                             <LocalizationProvider
                                                 dateAdapter={DateFnsUtils}
                                             >
