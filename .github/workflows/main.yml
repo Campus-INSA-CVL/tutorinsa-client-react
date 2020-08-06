@@ -24,4 +24,4 @@ jobs:
         env:
           EMAIL: jbeziaud@gmail.com
           GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BUILD_DIR: _site
+          BUILD_DIR: static
