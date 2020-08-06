@@ -80,14 +80,14 @@
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
-        "emitWarning": false,
         "extends": "react-app",
         "rules": {
             "no-console": "off",
             "no-unused-vars": "off",
             "eqeqeq": "off",
             "no-unused-expressions": "off",
-            "no-mixed-operators": "off"
+            "no-mixed-operators": "off",
+            "emitWarning": false
         }
     },
     "browserslist": {
