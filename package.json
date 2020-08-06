@@ -81,6 +81,7 @@
     },
     "eslintConfig": {
         "extends": "react-app",
+        "emitWarning": true,
         "rules": {
             "no-console": "off",
             "no-unused-vars": "off",
