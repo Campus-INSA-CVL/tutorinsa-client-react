@@ -80,7 +80,7 @@
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
-        "emitWarning": true,
+        "emitWarning": false,
         "extends": "react-app",
         "rules": {
             "no-console": "off",
