@@ -7,7 +7,6 @@ const AuthProvider = (props) => {
     const [authState, dispatchAuth] = useReducer(authReducer, {
         isAuthenticated: false,
         loading : true,
-        showErrorLogin: false
     })
 
     return (

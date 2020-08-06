@@ -149,7 +149,7 @@ export default function Post(props) {
         //check if the user is the author or not and get the info about the subscribes students if this
         // is a tutor post
 
-        if (post?.creator._id == userData._id) {
+        if (post?.creator?._id == userData._id) {
             post?.type == 'tuteur' && setfetchStudentsTrigger(true)
             setSubscribtionState({ ...subscribtionState, isAuthor: true })
             dispatchEditedInfo({
@@ -166,8 +166,8 @@ export default function Post(props) {
                 },
             })
         } else if (
-            post?.studentsIds.includes(userData._id) ||
-            post?.tutorsIds.includes(userData._id)
+            post?.studentsIds?.includes(userData._id) ||
+            post?.tutorsIds?.includes(userData._id)
         ) {
             setState({
                 ...state,

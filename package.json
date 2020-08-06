@@ -19,6 +19,10 @@
         "name": "Jordan Bzd",
         "email": "jordan.beziaud@insa-cvl.fr"
     },
+    "bugs": {
+        "url": "https://github.com/Campus-INSA-CVL/tutorinsa-client-react.git",
+        "email": "jbeziaud@gmail.com"
+      },
     "license": "MIT",
     "contributors": [],
     "dependencies": {

@@ -2,7 +2,8 @@ import io from 'socket.io-client'
 import feathers from '@feathersjs/client'
 import rest from '@feathersjs/rest-client'
 
-export const socket_api = io('https://tutorinsa-server.azurewebsites.net/')
+//export const socket_api = io('https://tutorinsa-server.azurewebsites.net/')
+export const socket_api = io('http://localhost:3030')
 
 console.log(socket_api)
 const client = feathers()

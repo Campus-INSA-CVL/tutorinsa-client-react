@@ -155,11 +155,13 @@ export default function App(props) {
         console.log(apiState)
         console.log(userData)
 
-        client.io.on('disconnect', () => {
+        //the current API trigger this event for no reason, TO FIX 
+        /*client.io.on('disconnect', () => {
             window.alert(
                 "La connexion avec l'API a été coupée, veuillez prendre contact avec la maintenance de Tutor'INSA !"
             )
-        })
+        })*/
+
         //we set it right for the next admin trigger in need redirect
         location.pathname != '/' && setRedirect(false)
     }, [apiState, userData])

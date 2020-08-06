@@ -18,44 +18,48 @@ const CarousselSignUp = () => {
 
     if (state.redirect) return <Redirect to="/signup" />
     return (
-        <ClickAwayListener
-            onClickAway={() => setState({ ...state, openCaroussel: false })}
-        >
-            <AutoRotatingCarousel
-                label={
-                    !authState.isAuthentified ? "S'inscire" : "J'ai compris !"
-                }
-                open={state.openCaroussel}
-                onClose={() => setState({ ...state, openCaroussel: false })}
-                onStart={() => setState({ ...state, redirect: true })}
-                mobile={isMobile ? true : false}
+        !isMobile && (
+            <ClickAwayListener
+                onClickAway={() => setState({ ...state, openCaroussel: false })}
             >
-                <Slide
-                    media={
-                        <img
-                            src={SlideImage1}
-                            alt="First slider for the caroussel"
-                        />
+                <AutoRotatingCarousel
+                    label={
+                        !authState.isAuthentified
+                            ? "S'inscire"
+                            : "J'ai compris !"
                     }
-                    mediaBackgroundStyle={{ backgroundColor: red[400] }}
-                    style={{ backgroundColor: red[600] }}
-                    title="Ouvert à tous, pour un grand nombre de matières !"
-                    subtitle="Adoptez une méthode efficace pour réviser vos cours !"
-                />
-                <Slide
-                    media={
-                        <img
-                            src={SlideImage2}
-                            alt="Second slider for the caroussel"
-                        />
-                    }
-                    mediaBackgroundStyle={{ backgroundColor: blue[400] }}
-                    style={{ backgroundColor: blue[600] }}
-                    title="Difficultées prononcées ou révisions de dernières minutes ?"
-                    subtitle="Pourquoi ne pas commencer maintenant ? Et pour cela, rien de plus simple !"
-                />
-            </AutoRotatingCarousel>
-        </ClickAwayListener>
+                    open={state.openCaroussel}
+                    onClose={() => setState({ ...state, openCaroussel: false })}
+                    onStart={() => setState({ ...state, redirect: true })}
+                    //mobile={isMobile}
+                >
+                    <Slide
+                        media={
+                            <img
+                                src={SlideImage1}
+                                alt="First slider for the caroussel"
+                            />
+                        }
+                        mediaBackgroundStyle={{ backgroundColor: red[400] }}
+                        style={{ backgroundColor: red[600] }}
+                        title="Ouvert à tous, pour un grand nombre de matières !"
+                        subtitle="Adoptez une méthode efficace pour réviser vos cours !"
+                    />
+                    <Slide
+                        media={
+                            <img
+                                src={SlideImage2}
+                                alt="Second slider for the caroussel"
+                            />
+                        }
+                        mediaBackgroundStyle={{ backgroundColor: blue[400] }}
+                        style={{ backgroundColor: blue[600] }}
+                        title="Difficultées prononcées ou révisions de dernières minutes ?"
+                        subtitle="Pourquoi ne pas commencer maintenant ? Et pour cela, rien de plus simple !"
+                    />
+                </AutoRotatingCarousel>
+            </ClickAwayListener>
+        )
     )
 }
 

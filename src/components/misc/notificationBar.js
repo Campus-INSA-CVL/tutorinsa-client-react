@@ -12,16 +12,14 @@ function AlertModified(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-export const ErrorLogIn = () => {
+export const ErrorLogIn = (props) => {
     const { authState, dispatchAuth } = useContext(AuthContext)
 
     return (
         <Snackbar
-            open={authState.showErrorLogin}
+            open={props.showErrorLogin}
             onClose={() => {
-                dispatchAuth({
-                    type: 'HANDLE_ERROR',
-                })
+                props.setErrorLogin(false)
             }}
             TransitionComponent={Slide}
             message="Erreur - Identifiants non valides !"

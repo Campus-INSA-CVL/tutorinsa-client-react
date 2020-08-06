@@ -29,6 +29,7 @@ import { ApiContext } from '../../store/contexts/api/apiContext'
 import { motion } from 'framer-motion'
 import { useQuery } from 'react-query'
 import { logIn } from '../../lib/loginFunctions'
+import { useMutation } from 'figbird'
 
 export default function Login(props) {
     const classes = useStyles()
@@ -39,16 +40,23 @@ export default function Login(props) {
         passwordError: '',
         loadingLogIn: false,
     })
+    const [showErrorLogin, setErrorLogin] = useState(false)
 
     const isMobile = useMediaQuery('(max-height : 570px)')
     const { authState, dispatchAuth } = useContext(AuthContext) //authState.isAuth handle the auth state !
     const { userData, dispatchUserData } = useContext(UserContext)
     const { apiState, dispatchApiData } = useContext(ApiContext)
 
-    const { data, isSuccess, isError, status } = useQuery(
+    /*const { data, isSuccess, isError, status } = useQuery(
         ['logIn', state.loadingLogIn, state.email, state.password],
         logIn
-    )
+    )*/
+
+    const { data, status, error, create } = useMutation('authentication', {
+        strategy: 'local',
+        email: state.email,
+        password: state.password,
+    })
 
     const validate = () => {
         let error = false
@@ -65,7 +73,14 @@ export default function Login(props) {
             errors.passwordError = 'Le mot de passe ne peut être vide !'
         }
         setState({ ...state, ...errors })
-        !error && setState({ ...state, loadingLogIn: true }) //start loading animation and the queryFetching
+        if (!error) {
+            setState({ ...state, loadingLogIn: true })
+            create({
+                strategy: 'local',
+                email: state.email,
+                password: state.password,
+            }) //start loading animation and the queryFetching
+        }
     }
 
     const handleChange = (e) => {
@@ -81,16 +96,16 @@ export default function Login(props) {
         // the API responded right, but with a wrong
         // answer for the user (invalid login, somewhat)
 
+        !error && console.log('data : ', data)
+        console.log(status, error)
         // the "state.loadingLogIn" is here to mark that a real fetch has been made
-        if (isSuccess && state.loadingLogIn && data.type == 'FeathersError') {
+        if (error?.code == 401) {
             setState({
                 ...state,
                 loadingLogIn: false,
             })
-            dispatchAuth({
-                type: 'HANDLE_ERROR',
-            })
-        } else if (isSuccess && state.loadingLogIn) {
+            setErrorLogin(true)
+        } else if (status == 'success') {
             dispatchAuth({ type: 'LOG_IN' })
             dispatchUserData({
                 type: 'GET_USER_INFO',
@@ -99,15 +114,16 @@ export default function Login(props) {
             props.setNotifAuth(true)
         }
 
-        isError &&
+        error &&
+            error?.code != 401 &&
             window.alert(
                 "Problème de réseau - l'API ne répond pas [code : FETCH-LOGIN]"
             )
-    }, [isSuccess, isError])
+    }, [status, error])
 
     useEffect(() => {
-        console.log('state :', state)
-    }, [state])
+        console.log('state :', showErrorLogin)
+    }, [showErrorLogin])
     if (authState.isAuthenticated) return <Redirect to="/" />
     return (
         <motion.div
@@ -195,7 +211,6 @@ export default function Login(props) {
                                     type="submit"
                                     variant="contained"
                                     color="primary"
-                                    disabled={authState.showErrorLogin}
                                     className={classes.submit}
                                     onClick={handleSumbit}
                                 >
@@ -248,7 +263,10 @@ export default function Login(props) {
                 </IconButton>
             </Container>
 
-            <ErrorLogIn />
+            <ErrorLogIn
+                showErrorLogin={showErrorLogin}
+                setErrorLogin={setErrorLogin}
+            />
             <Backdrop className={classes.backdrop} open={state.loadingLogIn}>
                 <TutoLoader />
             </Backdrop>
