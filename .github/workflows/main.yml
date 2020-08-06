@@ -20,4 +20,8 @@ jobs:
         env:
           CI: false
       - name: Deploy 🚀
-        run: gh-pages -d build
+        uses: Cecilapp/GitHub-Pages-deploy@2.0.1
+        env:
+          EMAIL: jbeziaud@gmail.com
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BUILD_DIR: _site
