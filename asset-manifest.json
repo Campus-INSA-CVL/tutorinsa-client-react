@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/tutorinsa-client-react/static/css/main.54ecd3b6.chunk.css",
-    "main.js": "/tutorinsa-client-react/static/js/main.b01562ca.chunk.js",
-    "main.js.map": "/tutorinsa-client-react/static/js/main.b01562ca.chunk.js.map",
+    "main.js": "/tutorinsa-client-react/static/js/main.f2f911d0.chunk.js",
+    "main.js.map": "/tutorinsa-client-react/static/js/main.f2f911d0.chunk.js.map",
     "runtime-main.js": "/tutorinsa-client-react/static/js/runtime-main.94e8bc87.js",
     "runtime-main.js.map": "/tutorinsa-client-react/static/js/runtime-main.94e8bc87.js.map",
     "static/css/2.26b00366.chunk.css": "/tutorinsa-client-react/static/css/2.26b00366.chunk.css",
     "static/js/2.119dd237.chunk.js": "/tutorinsa-client-react/static/js/2.119dd237.chunk.js",
     "static/js/2.119dd237.chunk.js.map": "/tutorinsa-client-react/static/js/2.119dd237.chunk.js.map",
     "index.html": "/tutorinsa-client-react/index.html",
-    "precache-manifest.373e9fe7ef7f15aeadf9c8087896f24a.js": "/tutorinsa-client-react/precache-manifest.373e9fe7ef7f15aeadf9c8087896f24a.js",
+    "precache-manifest.4510cccc5e989a699ca2f6a9f69fc8c2.js": "/tutorinsa-client-react/precache-manifest.4510cccc5e989a699ca2f6a9f69fc8c2.js",
     "service-worker.js": "/tutorinsa-client-react/service-worker.js",
     "static/css/2.26b00366.chunk.css.map": "/tutorinsa-client-react/static/css/2.26b00366.chunk.css.map",
     "static/css/main.54ecd3b6.chunk.css.map": "/tutorinsa-client-react/static/css/main.54ecd3b6.chunk.css.map",
@@ -26,6 +26,6 @@
     "static/css/2.26b00366.chunk.css",
     "static/js/2.119dd237.chunk.js",
     "static/css/main.54ecd3b6.chunk.css",
-    "static/js/main.b01562ca.chunk.js"
+    "static/js/main.f2f911d0.chunk.js"
   ]
 }

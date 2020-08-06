@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/tutorinsa-client-react/precache-manifest.373e9fe7ef7f15aeadf9c8087896f24a.js"
+  "/tutorinsa-client-react/precache-manifest.4510cccc5e989a699ca2f6a9f69fc8c2.js"
 );
 
 self.addEventListener('message', (event) => {

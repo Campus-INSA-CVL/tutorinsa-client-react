@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e778358806e78fee21b6491eee10fe4e",
+    "revision": "8a37e606f40cfc38d30a92429bbaf963",
     "url": "/tutorinsa-client-react/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/tutorinsa-client-react/static/css/2.26b00366.chunk.css"
   },
   {
-    "revision": "8ca64dabd884d7a0ce3d",
+    "revision": "f22ec505d0d8b34a1a08",
     "url": "/tutorinsa-client-react/static/css/main.54ecd3b6.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/tutorinsa-client-react/static/js/2.119dd237.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8ca64dabd884d7a0ce3d",
-    "url": "/tutorinsa-client-react/static/js/main.b01562ca.chunk.js"
+    "revision": "f22ec505d0d8b34a1a08",
+    "url": "/tutorinsa-client-react/static/js/main.f2f911d0.chunk.js"
   },
   {
     "revision": "f5caa5d3fca6ae6b275b",
