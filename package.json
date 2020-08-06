@@ -87,7 +87,7 @@
             "eqeqeq": "off",
             "no-unused-expressions": "off",
             "no-mixed-operators": "off",
-            "emitWarning": false
+            "emitWarning": 0
         }
     },
     "browserslist": {
