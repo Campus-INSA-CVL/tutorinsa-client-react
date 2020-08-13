@@ -17,6 +17,7 @@ import {
     DialogActions,
     DialogTitle,
     DialogContent,
+    useMediaQuery,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {
@@ -37,10 +38,13 @@ import { UserContext } from '../../store/contexts/user/userContext'
 import { ApiContext } from '../../store/contexts/api/apiContext'
 import fetchData from '../../lib/fetchData'
 import { ThemeContext } from '../../store/contexts/themes/themeContext'
-import { motion } from 'framer-motion'
 
 export default function AddPost() {
     const classes = useStyles()
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
+    
     const [state, setState] = useState({
         isAbleToGoNextSteps: false,
     })
@@ -117,6 +121,9 @@ export default function AddPost() {
     }
 
     const commitPost = () => {
+        //we close the create  pop-up and reset the request, and re fetch the posts by sending something a trigger to
+        // to the posts component
+        dispatchPostInfo({ type: 'RESET', payload: false })
         if (postInfo.type == 'tuteur')
             client.service('posts').create({
                 comment: postInfo.comment,
@@ -136,10 +143,6 @@ export default function AddPost() {
                 campus: postInfo.campus,
             })
         else console.log('erreur - type de user inconnu !')
-
-        //we close the create  pop-up and reset the request, and re fetch the posts by sending something a trigger to
-        // to the posts component
-        dispatchPostInfo({ type: 'RESET', payload: false })
     }
 
     const validateSteps = (direction) => {
@@ -222,6 +225,7 @@ export default function AddPost() {
                 <Stepper
                     style={{
                         background: 'inherit',
+                        overflowX: isMobile ? 'scroll' : 'hidden',
                     }}
                     alternativeLabel
                     activeStep={activeStep}

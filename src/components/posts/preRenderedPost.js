@@ -261,9 +261,14 @@ const PreRenderedPost = (props) => {
                                             <SupervisorAccountIcon />
                                         </Grid>
                                         <Grid item>
-                                            {`${props.userPost?.creator?.firstName}` +
-                                                ' ' +
-                                                `${props.userPost?.creator?.lastName}`.toUpperCase()}
+                                            {`${
+                                                props.userPost?.creator?.firstName
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                props.userPost?.creator?.firstName.slice(
+                                                    1
+                                                )
+                                            } ${props.userPost?.creator?.lastName.toUpperCase()}`}
                                         </Grid>
                                     </Grid>
                                 )}

@@ -13,7 +13,7 @@ const CarousselSignUp = () => {
         openCaroussel: true,
         redirect: false,
     })
-    const isMobile = useMediaQuery('(max-width:700px)')
+    const isMobile = useMediaQuery(`(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`)
     const { authState, dispatchAuth } = useContext(AuthContext)
 
     if (state.redirect) return <Redirect to="/signup" />

@@ -1,5 +1,7 @@
 import React from 'react'
-import useStyles, {containerVariants} from '../../styles/componentStyle/aboutStyle'
+import useStyles, {
+    containerVariants,
+} from '../../styles/componentStyle/aboutStyle'
 import {
     Grid,
     Typography,
@@ -7,6 +9,7 @@ import {
     CardActions,
     CardContent,
     CardMedia,
+    useMediaQuery,
 } from '@material-ui/core'
 import TeamInfo from '../../containers/misc/teamContact'
 import BuildIcon from '@material-ui/icons/Build'
@@ -14,10 +17,13 @@ import FacebookIcon from '@material-ui/icons/Facebook'
 import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import GitHubIcon from '@material-ui/icons/GitHub'
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export default function About() {
     const classes = useStyles()
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
 
     return (
         <motion.div
@@ -26,8 +32,11 @@ export default function About() {
             animate="visible"
             exit="exit"
             className={classes.root}
+            style={isMobile ? {
+                height: 'auto',
+            } : {}}
         >
-            <Grid container direction="column" justify="space-around" >
+            <Grid container direction="column" justify="space-around">
                 <Grid item>
                     <Typography variant="h2" align="center">
                         Voici l'équipe en charge du développement de ce projet !
@@ -40,12 +49,16 @@ export default function About() {
                     direction="row"
                     justify="space-evenly"
                     className={classes.teamSpec}
+                    spacing={2}
                 >
                     {TeamInfo.map((person) => {
                         let alt = String(`${person.lastname}_img`)
                         return (
                             <Grid item>
-                                <Card className={classes.card}>
+                                <Card
+                                    className={classes.card}
+                                    style={isMobile ? { minWidth: 0 } : {}}
+                                >
                                     <CardMedia
                                         component="img"
                                         className={classes.image}
@@ -62,7 +75,7 @@ export default function About() {
                                             <BuildIcon /> {person.job}{' '}
                                             <BuildIcon />
                                         </Typography>
-                                        <Typography variant="body2">
+                                        <Typography variant="h3" align="center">
                                             {person.lastname} <br />{' '}
                                             {person.firstname}
                                         </Typography>

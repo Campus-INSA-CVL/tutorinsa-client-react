@@ -4,6 +4,7 @@ import React, {
     useState,
     useCallback,
     useRef,
+    Fragment,
 } from 'react'
 import useStyles, {
     containerVariants,
@@ -25,6 +26,9 @@ import {
     FormControl,
     InputLabel,
     Select,
+    useMediaQuery,
+    Dialog,
+    DialogContent,
 } from '@material-ui/core'
 import AddPost from './addPost'
 import SortPanel from '../../components/posts/sortPannel'
@@ -42,6 +46,9 @@ import {
     TimelineConnector,
     TimelineContent,
     Pagination,
+    SpeedDial,
+    SpeedDialAction,
+    SpeedDialIcon,
 } from '@material-ui/lab/'
 import TutoLoader from '../../components/misc/loader'
 import client from '../../vendors/feather'
@@ -52,6 +59,9 @@ import ViewComfyIcon from '@material-ui/icons/ViewComfy'
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import EventIcon from '@material-ui/icons/Event'
 import SchoolIcon from '@material-ui/icons/School'
+import CreateIcon from '@material-ui/icons/Create'
+import SearchIcon from '@material-ui/icons/Search'
+import SortIcon from '@material-ui/icons/Sort'
 import BackToTop from 'react-back-to-top'
 import { ceil } from 'mathjs'
 import { motion } from 'framer-motion'
@@ -67,12 +77,19 @@ export default function Posts() {
     const { postInfo, dispatchPostInfo } = useContext(PostCrContext)
     const { userData } = useContext(UserContext)
 
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
     const classes = useStyles()
+
     // handling states for the request to the API
     const [page, setPage] = useState(0)
     const [queryField, setQueryField] = useState('')
-    const [trigger, setTrigger] = useState(false)
 
+    // for mobile, handling speed dial
+    const [openDial, setOpenDial] = useState(false)
+    const [openSortBar, setSortBar] = useState(false)
+    const [openSortPanel, setSortPanel] = useState(false)
     // internal state of the component
     const [state, setState] = useState({
         firstConnexion: true,
@@ -321,52 +338,61 @@ export default function Posts() {
             animate="visible"
             exit="exit"
             className={classes.root}
+            style={
+                isMobile && {
+                    overflowY: 'scroll',
+                }
+            }
         >
-            <Grid container>
-                <Grid
-                    container
-                    direction="row"
-                    className={classes.gridGeneral}
-                    spacing={4}
-                >
-                    <Grid item style={{ flex: 1 }}>
+            <Grid
+                container
+                className={classes.gridGeneral}
+                justify="space-evenly"
+                spacing={isMobile && 2}
+            >
+                {!isMobile && (
+                    <Grid item className={classes.sortPannel}>
                         <SortPanel />
                     </Grid>
+                )}
 
+                <Grid
+                    item
+                    className={classes.postList}
+                    container
+                    direction="column"
+                    style={{
+                        flex: isMobile && 0.98,
+                    }}
+                >
                     <Grid
                         item
-                        className={classes.postList}
                         container
-                        direction="column"
-                        spacing={2}
+                        className={classes.sortBar}
+                        style={{
+                            border: themePreference.borderPost,
+                        }}
+                        justify="space-evenly"
                     >
-                        <Grid
-                            item
-                            container
-                            className={classes.sortBar}
-                            style={{
-                                border: themePreference.borderPost,
-                            }}
-                            justify="space-evenly"
-                        >
-                            <Typography
-                                variant="overline"
-                                className={classes.title}
-                                /*style={{
+                        <Typography
+                            variant="overline"
+                            className={classes.title}
+                            /*style={{
                                     color: themePreference.textCardColor,
                                 }}*/
-                            >
-                                {!isSuccess ? (
-                                    <CircularProgress
-                                        color="primary"
-                                        size="1.5rem"
-                                    />
-                                ) : (
-                                    resolvedData?.total
-                                )}{' '}
-                                annonces disponibles :
-                            </Typography>
+                        >
+                            {!isSuccess ? (
+                                <CircularProgress
+                                    color="primary"
+                                    size="1.5rem"
+                                />
+                            ) : (
+                                resolvedData?.total
+                            )}{' '}
+                            annonces disponibles :
+                        </Typography>
 
+                        {!isMobile && state.display != 'calendar' && (
                             <FormControl style={{ minWidth: 100 }}>
                                 <InputLabel color="primary" id="sort-label">
                                     Trier
@@ -400,30 +426,32 @@ export default function Posts() {
                                     </MenuItem>
                                 </Select>
                             </FormControl>
+                        )}
 
-                            {state.display == 'grid' && (
-                                <FormControl style={{ minWidth: 50 }}>
-                                    <Typography>
-                                        Nombre d'annonces affichées
-                                    </Typography>
+                        {!isMobile && state.display == 'grid' && (
+                            <FormControl style={{ minWidth: 50 }}>
+                                <Typography>
+                                    Nombre d'annonces affichées
+                                </Typography>
 
-                                    <Select
-                                        labelId="select-label-post_limit"
-                                        value={post_display_limit}
-                                        onChange={(e) =>
-                                            setPostDisplayLimit(e.target.value)
-                                        }
-                                    >
-                                        <MenuItem value={1}>1</MenuItem>
-                                        <MenuItem value={2}>2</MenuItem>
-                                        <MenuItem value={3}>3</MenuItem>
-                                        <MenuItem value={4}>4</MenuItem>
-                                        <MenuItem value={5}>5</MenuItem>
-                                        <MenuItem value={6}>6</MenuItem>
-                                        <MenuItem value={7}>7</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            )}
+                                <Select
+                                    labelId="select-label-post_limit"
+                                    value={post_display_limit}
+                                    onChange={(e) =>
+                                        setPostDisplayLimit(e.target.value)
+                                    }
+                                >
+                                    <MenuItem value={1}>1</MenuItem>
+                                    <MenuItem value={2}>2</MenuItem>
+                                    <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem>
+                                    <MenuItem value={5}>5</MenuItem>
+                                    <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem>
+                                </Select>
+                            </FormControl>
+                        )}
+                        {!isMobile && (
                             <Tabs
                                 value={state.display}
                                 onChange={(e, value) => {
@@ -440,167 +468,152 @@ export default function Posts() {
                                 />
                                 <Tab icon={<EventIcon />} value="calendar" />
                             </Tabs>
-                        </Grid>
-
-                        <Grid
-                            item
-                            style={{
-                                border: themePreference.borderPost,
-                                height: '70vh',
-                            }}
-                        >
-                            {state.display == 'calendar' && (
-                                <PostCalendar height="50vh" />
-                            )}
-                            {state.display == 'grid' ? (
-                                <Grid
-                                    item
-                                    container
-                                    direction="column"
-                                    style={{
-                                        padding: '1%',
-                                        height: '100%',
-                                    }}
-                                >
-                                    {!isFetching && isSuccess ? (
-                                        <Grid
-                                            item
-                                            container
-                                            spacing={2}
-                                            className={classes.gridPostList}
-                                        >
-                                            {resolvedData?.data.length == 0 ? (
-                                                <Typography
-                                                    align="center"
-                                                    style={{ width: '100%' }}
-                                                    variant="h2"
-                                                >
-                                                    Aucune annonce trouvée !
-                                                </Typography>
-                                            ) : (
-                                                resolvedData?.data.map(
-                                                    (post, index) => {
-                                                        return (
-                                                            <Grid item xs>
+                        )}
+                    </Grid>
+                    <Grid
+                        item
+                        style={{
+                            border: themePreference.borderPost,
+                            height: isMobile ? 'auto' : '70vh',
+                            width: isMobile && '100%',
+                        }}
+                    >
+                        {state.display == 'calendar' && (
+                            <PostCalendar height="50vh" />
+                        )}
+                        {state.display == 'grid' ? (
+                            <Fragment>
+                                {!isFetching && isSuccess ? (
+                                    <Grid
+                                        item
+                                        container
+                                        className={classes.gridPostList}
+                                        spacing={isMobile && 1}
+                                    >
+                                        {resolvedData?.data.length == 0 ? (
+                                            <Typography
+                                                align="center"
+                                                style={{ width: '100%' }}
+                                                variant="h2"
+                                            >
+                                                Aucune annonce trouvée !
+                                            </Typography>
+                                        ) : (
+                                            resolvedData?.data.map(
+                                                (post, index) => {
+                                                    return (
+                                                        <Grid item xs>
+                                                            <PreRenderedPost
+                                                                userPost={post}
+                                                                key={index}
+                                                            />
+                                                        </Grid>
+                                                    )
+                                                }
+                                            )
+                                        )}
+                                    </Grid>
+                                ) : (
+                                    <Grid
+                                        item
+                                        container
+                                        direction="column"
+                                        spacing={4}
+                                        style={{ flex: 1 }}
+                                    >
+                                        <Grid item>
+                                            <Skeleton
+                                                variant="rect"
+                                                width={'100%'}
+                                                height={150}
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <Skeleton
+                                                variant="rect"
+                                                width={'100%'}
+                                                height={150}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                )}
+                                {!isMobile && (
+                                    <Grid item justify="center" container>
+                                        <Pagination
+                                            style={{
+                                                border:
+                                                    themePreference.borderPost,
+                                            }}
+                                            count={ceil(
+                                                resolvedData?.total /
+                                                    post_display_limit
+                                            )}
+                                            defaultPage={1}
+                                            siblingCount={2}
+                                            boundaryCount={2}
+                                            showFirstButton
+                                            showLastButton
+                                            page={page + 1}
+                                            onChange={(e, value) =>
+                                                setPage(value - 1)
+                                            }
+                                        />
+                                        )
+                                    </Grid>
+                                )}
+                            </Fragment>
+                        ) : isSuccess && state.display == 'list' ? (
+                            <Grid
+                                item
+                                justify="center"
+                                className={classes.timelinePostList}
+                            >
+                                {resolvedData?.data.length == 0 ? (
+                                    <Typography
+                                        align="center"
+                                        style={{ width: '100%' }}
+                                        variant="h2"
+                                    >
+                                        Aucune annonce trouvée !
+                                    </Typography>
+                                ) : (
+                                    <div>
+                                        <Timeline align="alternate">
+                                            {resolvedData?.data.map(
+                                                (post, index) => (
+                                                    <TimelineItem>
+                                                        <TimelineSeparator>
+                                                            <TimelineDot>
+                                                                <SchoolIcon />
+                                                            </TimelineDot>
+                                                            <TimelineConnector />
+                                                        </TimelineSeparator>
+                                                        <TimelineContent>
+                                                            {!isFetching ? (
                                                                 <PreRenderedPost
                                                                     userPost={
                                                                         post
                                                                     }
                                                                     key={index}
                                                                 />
-                                                            </Grid>
-                                                        )
-                                                    }
+                                                            ) : (
+                                                                <Skeleton
+                                                                    variant="rect"
+                                                                    width={
+                                                                        '100%'
+                                                                    }
+                                                                    height={
+                                                                        '100%'
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </TimelineContent>
+                                                    </TimelineItem>
                                                 )
                                             )}
-                                        </Grid>
-                                    ) : (
-                                        <Grid
-                                            item
-                                            container
-                                            direction="column"
-                                            spacing={4}
-                                            style={{ flex: 1 }}
-                                        >
-                                            <Grid item>
-                                                <Skeleton
-                                                    variant="rect"
-                                                    width={'100%'}
-                                                    height={150}
-                                                />
-                                            </Grid>
-                                            <Grid item>
-                                                <Skeleton
-                                                    variant="rect"
-                                                    width={'100%'}
-                                                    height={150}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    )}
-                                    <Grid
-                                        item
-                                        justify="center"
-                                        container
-                                        spacing={2}
-                                    >
-                                        <Grid item>
-                                            <Pagination
-                                                style={{
-                                                    border:
-                                                        themePreference.borderPost,
-                                                }}
-                                                count={ceil(
-                                                    resolvedData?.total /
-                                                        post_display_limit
-                                                )}
-                                                defaultPage={1}
-                                                siblingCount={2}
-                                                boundaryCount={2}
-                                                showFirstButton
-                                                showLastButton
-                                                page={page + 1}
-                                                onChange={(e, value) =>
-                                                    setPage(value - 1)
-                                                }
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            ) : isSuccess && state.display == 'list' ? (
-                                <Grid
-                                    item
-                                    justify="center"
-                                    className={classes.timelinePostList}
-                                >
-                                    {resolvedData?.data.length == 0 ? (
-                                        <Typography
-                                            align="center"
-                                            style={{ width: '100%' }}
-                                            variant="h2"
-                                        >
-                                            Aucune annonce trouvée !
-                                        </Typography>
-                                    ) : (
-                                        <div>
-                                            <Timeline align="alternate">
-                                                {resolvedData?.data.map(
-                                                    (post, index) => (
-                                                        <TimelineItem>
-                                                            <TimelineSeparator>
-                                                                <TimelineDot>
-                                                                    <SchoolIcon />
-                                                                </TimelineDot>
-                                                                <TimelineConnector />
-                                                            </TimelineSeparator>
-                                                            <TimelineContent>
-                                                                {!isFetching ? (
-                                                                    <PreRenderedPost
-                                                                        userPost={
-                                                                            post
-                                                                        }
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                    />
-                                                                ) : (
-                                                                    <Skeleton
-                                                                        variant="rect"
-                                                                        width={
-                                                                            '100%'
-                                                                        }
-                                                                        height={
-                                                                            '100%'
-                                                                        }
-                                                                    />
-                                                                )}
-                                                            </TimelineContent>
-                                                        </TimelineItem>
-                                                    )
-                                                )}
-                                            </Timeline>
+                                        </Timeline>
 
-                                            {/*<button
+                                        {/*<button
                                                 ref={loadMoreButtonRef}
                                                 onClick={() => fetchMore()}
                                                 disabled={
@@ -614,38 +627,249 @@ export default function Posts() {
                                                     ? 'Load More'
                                                     : 'Nothing more to load'}
                                                 </button>*/}
-                                        </div>
-                                    )}
+                                    </div>
+                                )}
+                            </Grid>
+                        ) : (
+                            <Grid
+                                item
+                                container
+                                direction="column"
+                                spacing={4}
+                                style={{ flex: 1 }}
+                            >
+                                <Grid item>
+                                    <Skeleton
+                                        variant="rect"
+                                        width={'100%'}
+                                        height={150}
+                                    />
                                 </Grid>
-                            ) : (
-                                <Grid
-                                    item
-                                    container
-                                    direction="column"
-                                    spacing={4}
-                                    style={{ flex: 1 }}
-                                >
-                                    <Grid item>
-                                        <Skeleton
-                                            variant="rect"
-                                            width={'100%'}
-                                            height={150}
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <Skeleton
-                                            variant="rect"
-                                            width={'100%'}
-                                            height={150}
-                                        />
-                                    </Grid>
+                                <Grid item>
+                                    <Skeleton
+                                        variant="rect"
+                                        width={'100%'}
+                                        height={150}
+                                    />
                                 </Grid>
-                            )}
-                        </Grid>
-                        <AddPost />
+                            </Grid>
+                        )}
                     </Grid>
                 </Grid>
+
+                {isMobile && (
+                    <Grid item justify="center" container>
+                        <Pagination
+                            style={{
+                                border: themePreference.borderPost,
+                            }}
+                            count={ceil(
+                                resolvedData?.total / post_display_limit
+                            )}
+                            defaultPage={1}
+                            siblingCount={2}
+                            boundaryCount={2}
+                            showFirstButton
+                            showLastButton
+                            page={page + 1}
+                            onChange={(e, value) => setPage(value - 1)}
+                        />
+
+                        <SpeedDial
+                            className={classes.speedDial}
+                            icon={<SpeedDialIcon />}
+                            onClose={() => setOpenDial(false)}
+                            onOpen={() => setOpenDial(true)}
+                            open={openDial}
+                            direction={'up'}
+                            ariaLabel="SpeedDial Details"
+                        >
+                            <SpeedDialAction
+                                key={'Ajouter une annonce'}
+                                icon={<CreateIcon />}
+                                tooltipTitle={'Ajouter une annonce'}
+                                onClick={() =>
+                                    dispatchPostInfo({
+                                        type: 'DIALOG',
+                                        payload: true,
+                                    })
+                                }
+                            />
+                            <SpeedDialAction
+                                key={'Filter les annonces'}
+                                icon={<SearchIcon />}
+                                tooltipTitle={'Filter les annonces'}
+                                onClick={() => setSortPanel(true)}
+                            />
+                            <SpeedDialAction
+                                key={'Trier les annonces'}
+                                icon={<SortIcon />}
+                                tooltipTitle={'Trier les annonces'}
+                                onClick={() => setSortBar(true)}
+                            />
+                        </SpeedDial>
+
+                        <Dialog
+                            open={openSortPanel}
+                            className={classes.dialog}
+                            onClose={() => setSortPanel(false)}
+                            maxWidth="xs"
+                            aria-labelledby="sort_panel"
+                            PaperProps={{
+                                classes: { root: classes.dialogTransparency },
+                            }}
+                        >
+                            <SortPanel setSortPanel={setSortPanel} />
+                        </Dialog>
+
+                        <Dialog
+                            open={openSortBar}
+                            className={classes.dialog}
+                            onClose={() => setSortBar(false)}
+                            maxWidth="xs"
+                            aria-labelledby="sort_bar"
+                            PaperProps={{
+                                classes: { root: classes.dialogTransparency },
+                            }}
+                        >
+                            <DialogContent>
+                                <Grid
+                                    container
+                                    direction="column"
+                                    spacing={2}
+                                    justify="center"
+                                >
+                                    {state.display != 'calendar' && (
+                                        <Grid
+                                            item
+                                            style={{
+                                                margin: 'auto',
+                                            }}
+                                        >
+                                            <FormControl
+                                                style={{ minWidth: 100 }}
+                                            >
+                                                <InputLabel
+                                                    color="primary"
+                                                    id="sort-label"
+                                                >
+                                                    Trier
+                                                </InputLabel>
+                                                <Select
+                                                    labelId="sort-label"
+                                                    value={state.sort}
+                                                    onChange={(e) => {
+                                                        setState({
+                                                            ...state,
+                                                            sort:
+                                                                e.target.value,
+                                                        })
+                                                        setQueryField(
+                                                            e.target.value
+                                                        )
+                                                    }}
+                                                >
+                                                    <MenuItem item value={''}>
+                                                        Aucune
+                                                    </MenuItem>
+                                                    <MenuItem value={'recent'}>
+                                                        Plus récent
+                                                    </MenuItem>
+                                                    <MenuItem value={'former'}>
+                                                        Plus ancien
+                                                    </MenuItem>
+                                                    <MenuItem value={'room'}>
+                                                        Par salle
+                                                    </MenuItem>
+                                                    <MenuItem value={'date'}>
+                                                        Par jour
+                                                    </MenuItem>
+                                                    <MenuItem value={'subject'}>
+                                                        Par matière
+                                                    </MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                    )}
+
+                                    {state.display == 'grid' && (
+                                        <Grid item>
+                                            <FormControl
+                                                style={{ minWidth: 50 }}
+                                            >
+                                                <Typography>
+                                                    Nombre d'annonces affichées
+                                                </Typography>
+
+                                                <Select
+                                                    labelId="select-label-post_limit"
+                                                    value={post_display_limit}
+                                                    onChange={(e) =>
+                                                        setPostDisplayLimit(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <MenuItem value={1}>
+                                                        1
+                                                    </MenuItem>
+                                                    <MenuItem value={2}>
+                                                        2
+                                                    </MenuItem>
+                                                    <MenuItem value={3}>
+                                                        3
+                                                    </MenuItem>
+                                                    <MenuItem value={4}>
+                                                        4
+                                                    </MenuItem>
+                                                    <MenuItem value={5}>
+                                                        5
+                                                    </MenuItem>
+                                                    <MenuItem value={6}>
+                                                        6
+                                                    </MenuItem>
+                                                    <MenuItem value={7}>
+                                                        7
+                                                    </MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                    )}
+
+                                    <Grid item>
+                                        <Tabs
+                                            value={state.display}
+                                            onChange={(e, value) => {
+                                                setState({
+                                                    ...state,
+                                                    display: value,
+                                                })
+                                            }}
+                                        >
+                                            <Tab
+                                                icon={<ViewComfyIcon />}
+                                                value="grid"
+                                            />
+                                            <Tab
+                                                icon={
+                                                    <FormatListBulletedIcon />
+                                                }
+                                                value="list"
+                                            />
+                                            <Tab
+                                                icon={<EventIcon />}
+                                                value="calendar"
+                                            />
+                                        </Tabs>
+                                    </Grid>
+                                </Grid>
+                            </DialogContent>
+                        </Dialog>
+                    </Grid>
+                )}
             </Grid>
+
+            <AddPost />
         </motion.div>
     ) : (
         <Grid

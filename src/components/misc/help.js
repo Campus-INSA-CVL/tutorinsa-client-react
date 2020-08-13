@@ -11,6 +11,7 @@ import {
     InputLabel,
     CardActions,
     TextareaAutosize,
+    useMediaQuery
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Divider from '@material-ui/core/Divider'
@@ -29,6 +30,10 @@ export default function Help() {
         content: '',
     })
 
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
+
     const handleChange = (e) => {
         setQuestion({ ...question, [e.target.name]: e.target.value })
     }
@@ -43,25 +48,27 @@ export default function Help() {
             exit="exit"
             className={classes.root}
         >
-            <Grid container direction="column" justify="space-evenly">
-                <Typography
-                    variant="h2"
-                    align="center"
-                >
-                    Besoin d'aide ? Vous êtes au bon endroit !
-                </Typography>
+            <Grid
+                container
+                direction="column"
+                justify="space-evenly"
+                style={!isMobile ? { height: 'inherit' } : {}}
+            >
+                <Grid item>
+                    <Typography variant="h2" align="center">
+                        Besoin d'aide ? Vous êtes au bon endroit !
+                    </Typography>
+                </Grid>
 
                 <Grid
+                    item
                     container
                     direction="row"
                     className={classes.gridGeneral}
                     spacing={8}
                 >
                     <Grid item xs>
-                        <Card
-                            className={classes.card}
-                           
-                        >
+                        <Card className={classes.card}>
                             <Grid container direction="column" spacing={2}>
                                 <Grid item>
                                     <Typography variant="h4" align="center">
@@ -123,7 +130,6 @@ export default function Help() {
                         <Card
                             className={classes.card}
                             style={{
-                                
                                 overflowY: 'scroll',
                             }}
                         >
@@ -147,10 +153,7 @@ export default function Help() {
                                     spacing={2}
                                 >
                                     <Grid item xs>
-                                        <InputLabel
-                                            id="title-label"
-                                           
-                                        >
+                                        <InputLabel id="title-label">
                                             Titre :{' '}
                                         </InputLabel>
                                         <TextField
@@ -165,10 +168,7 @@ export default function Help() {
                                     </Grid>
 
                                     <Grid item xs>
-                                        <InputLabel
-                                            id="content-label"
-                                            
-                                        >
+                                        <InputLabel id="content-label">
                                             Question :{' '}
                                         </InputLabel>
                                         <TextareaAutosize

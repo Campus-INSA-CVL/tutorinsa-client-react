@@ -5,6 +5,7 @@ import {
     Button,
     GridList,
     Backdrop,
+    useMediaQuery,
 } from '@material-ui/core/'
 import { Skeleton } from '@material-ui/lab'
 import useStyles, {
@@ -28,7 +29,9 @@ export default function Home() {
     const [lastestPost, setLastestPost] = useState({
         limit: 3,
     })
-
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
     const { themePreference } = useContext(ThemeContext)
 
     const { status, error, data, isFetching } = useFind('posts', {
@@ -59,8 +62,17 @@ export default function Home() {
             {!authState.isLoading ? (
                 <Grid
                     container
-                    className={classes.root}
-                    direction="column"
+                    style={
+                        isMobile
+                            ? {
+                                  overflowY: 'scroll',
+                                  height: 'inherit',
+                              }
+                            : {
+                                  height: 'inherit',
+                              }
+                    }
+                    direction="row"
                     justify="space-evenly"
                     alignItems="center"
                 >
@@ -68,8 +80,14 @@ export default function Home() {
                         <CarousselSignUp />
                     )}
 
-                    <Grid item container justify="center" spacing={4}>
-                        <Grid item>
+                    <Grid
+                        item
+                        container
+                        direction={isMobile && 'column'}
+                        justify="center"
+                        spacing={!isMobile && 4}
+                    >
+                        <Grid item align={isMobile && 'center'}>
                             <img src={logoTutorinsa} alt="Logo de TutorINSA" />
                         </Grid>
 
@@ -115,7 +133,7 @@ export default function Home() {
                         container
                         direction="column"
                         align="center"
-                        className={classes.postDisplay} 
+                        className={classes.postDisplay}
                     >
                         <Typography variant="h2" style={{ color: 'white' }}>
                             Annonces les plus récentes :
@@ -125,8 +143,9 @@ export default function Home() {
                         <GridList
                             className={classes.gridList}
                             style={{ border: themePreference.borderPost }}
-                            cols={3}
+                            cols={isMobile ? 1 : 3}
                             spacing={2}
+                            cellHeight={isMobile && "auto"}
                         >
                             {!isFetching ? (
                                 data?.map((post, index) => (

@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core'
-
 export const containerVariants = {
     hidden: {
         opacity: 0,
@@ -32,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         fontSize: '1.25em',
     },
+    buttonMobile: {
+        color: 'inherit',
+        textDecoration: 'none',
+        fontSize: '1.25em',
+    },
     title: {
         flexGrow: 1,
     },
@@ -44,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#4e73df',
+    },
+    links: {
+        color: 'inherit',
+        textDecoration: 'none',
     },
 }))
 

@@ -23,7 +23,7 @@ export const containerVariants = {
     },
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     layout: {
         width: 'auto',
         marginLeft: theme.spacing(2),
@@ -33,8 +33,8 @@ const useStyles = makeStyles(theme => ({
             width: 600,
             marginLeft: 'auto',
             marginRight: 'auto',
-            overflow: 'visible'
-        }
+            overflow: 'visible',
+        },
     },
     paper: {
         marginTop: theme.spacing(3),
@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
             marginTop: theme.spacing(6),
             marginBottom: theme.spacing(6),
             padding: theme.spacing(3),
-            overflow: 'visible'
-        }
+            overflow: 'visible',
+        },
     },
     stepper: {
         padding: theme.spacing(3, 0, 5),
@@ -53,44 +53,48 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         [theme.breakpoints.up(570)]: {
             flexDirection: 'row',
-
-        }
+        },
     },
     buttons: {
         display: 'flex',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     button: {
         marginTop: theme.spacing(3),
-        marginLeft: theme.spacing(1)
+        marginLeft: theme.spacing(1),
     },
     root: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
-        height: "100%"
+        height: '100%',
     },
     navlink: {
         textDecoration: 'none',
-        color: 'inherit'
+        color: 'inherit',
     },
     homeButton: {
         display: 'block',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
     },
     formControl: {
-        padding: '1rem'
+        padding: '1rem',
     },
     dialogCard: {
-        overflowX: "auto"
+        overflowX: 'auto',
     },
     img: {
         height: '15vh',
         [theme.breakpoints.up(570)]: {
-            height: 'auto'
-        }
-    }
+            height: 'auto',
+        },
+    },
+    center: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        display: 'block',
+    },
 }))
 
 export default useStyles

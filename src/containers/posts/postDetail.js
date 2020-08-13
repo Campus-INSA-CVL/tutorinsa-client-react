@@ -16,6 +16,7 @@ import {
     TableContainer,
     Popover,
     Paper,
+    useMediaQuery,
 } from '@material-ui/core'
 import EditPost from './editPost'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -58,11 +59,14 @@ import { PostCrContext } from '../../store/contexts/posts/postCrContext'
 
 export default function Post(props) {
     const classes = useStyles()
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
+
     const post_id = props.match.params.post_id
 
     const { authState } = useContext(AuthContext)
     const { userData } = useContext(UserContext)
-    const { themePreference } = useContext(ThemeContext)
     const { dispatchApiData } = useContext(ApiContext)
     const { postEditInfo, dispatchEditedInfo } = useContext(PostEditContext)
     const { dispatchPostInfo } = useContext(PostCrContext)
@@ -231,12 +235,22 @@ export default function Post(props) {
             container
             direction="column"
             className={classes.root}
+            style={
+                isMobile
+                    ? {
+                          height: 'auto',
+                      }
+                    : {}
+            }
             justify="space-evenly"
         >
             {!state.loading ? (
                 <Fragment>
                     <Grid container justify="space-evenly">
-                        <Typography variant="h2" align="center">
+                        <Typography
+                            variant={isMobile ? 'h4' : 'h2'}
+                            align="center"
+                        >
                             Annonce - {post_id}
                         </Typography>
 
@@ -315,15 +329,29 @@ export default function Post(props) {
                         )}
                     </Grid>
                     <Divider variant="middle" />
-                    <Grid container direction="row" spacing={1}>
-                        <Grid item className={classes.infoGrid}>
+                    <Grid container direction={isMobile && "column"}>
+                        <Grid
+                            item
+                            className={classes.infoGrid}
+                            style={isMobile ? { flex: 1,
+                            maxWidth:"100%" } : {}}
+                        >
                             <Card className={classes.card}>
                                 <Grid
-                                    item
                                     container
                                     direction="column"
-                                    spacing={4}
-                                    className={classes.detailGrid}
+                                    spacing={isMobile && 4}
+                                    justify={!isMobile && 'space-evenly'}
+                                    style={
+                                        !isMobile
+                                            ? {
+                                                  padding: '5%',
+                                                  minHeight: 500,
+                                                  minWidth: 450,
+                                                  fontSize: '1.5rem',
+                                              }
+                                            : { padding: '5%' }
+                                    }
                                 >
                                     <Grid item>
                                         <Typography variant="h2" align="center">
@@ -485,327 +513,321 @@ export default function Post(props) {
                             alignContent="center"
                             direction="column"
                             spacing={2}
+                                style={isMobile ? {
+                                    flex: 1,
+                                    maxWidth:"100%"
+                                } : {}}
                         >
-                            <Grid item style={{ maxWidth: '75%' }}>
-                                <Card className={classes.card}>
-                                    <Typography variant="h2" align="center">
-                                        Matière : {post?.subject?.name}
-                                    </Typography>
+                            <Card className={classes.card}>
+                                <Typography variant="h2" align="center">
+                                    Matière : {post?.subject?.name}
+                                </Typography>
 
-                                    <CardContent>
-                                        <Grid
-                                            container
-                                            direction="column"
-                                            justify="space-evenly"
-                                            spacing={2}
-                                        >
-                                            <Grid item>
-                                                <Divider variant="middle" />
-                                            </Grid>
-                                            <Grid item align="center">
-                                                {post?.comment}
-                                            </Grid>
-                                            <Grid item>
-                                                <Divider variant="middle" />
-                                            </Grid>
-                                            {post?.type == 'tuteur' && (
-                                                <Grid
-                                                    item
-                                                    container
-                                                    direction="column"
-                                                    align="center"
-                                                    justify="space-evenly"
-                                                >
-                                                    <Grid item>
-                                                        Nombre d'étudiants
-                                                        inscrits :{' '}
-                                                        {
-                                                            post?.studentsIds
-                                                                .length
-                                                        }{' '}
-                                                        /{' '}
-                                                        {post?.studentsCapacity}
-                                                        <BorderLinearProgress
-                                                            variant="determinate"
-                                                            value={
-                                                                post.studentsIds
-                                                                    .length *
-                                                                (100 /
-                                                                    post?.studentsCapacity)
-                                                            }
-                                                        />
-                                                    </Grid>
-                                                    <Grid item>
-                                                        Nombre de tuteurs :{' '}
-                                                        {post?.tutorsIds.length}{' '}
-                                                        / {post?.tutorsCapacity}
-                                                        <BorderLinearProgress
-                                                            variant="determinate"
-                                                            value={
-                                                                post?.tutors
-                                                                    .length *
-                                                                (100 /
-                                                                    post?.tutorsCapacity)
-                                                            }
-                                                        />
-                                                    </Grid>
-                                                </Grid>
-                                            )}
-                                            {post?.type == 'tuteur' && (
+                                <CardContent>
+                                    <Grid
+                                        container
+                                        direction="column"
+                                        justify="space-evenly"
+                                        spacing={2}
+                                    >
+                                        <Grid item>
+                                            <Divider variant="middle" />
+                                        </Grid>
+                                        <Grid item align="center">
+                                            {post?.comment}
+                                        </Grid>
+                                        <Grid item>
+                                            <Divider variant="middle" />
+                                        </Grid>
+                                        {post?.type == 'tuteur' && (
+                                            <Grid
+                                                item
+                                                container
+                                                direction="column"
+                                                align="center"
+                                                justify="space-evenly"
+                                            >
                                                 <Grid item>
-                                                    <Divider variant="middle" />
+                                                    Nombre d'étudiants inscrits
+                                                    : {post?.studentsIds.length}{' '}
+                                                    / {post?.studentsCapacity}
+                                                    <BorderLinearProgress
+                                                        variant="determinate"
+                                                        value={
+                                                            post.studentsIds
+                                                                .length *
+                                                            (100 /
+                                                                post?.studentsCapacity)
+                                                        }
+                                                    />
                                                 </Grid>
-                                            )}
+                                                <Grid item>
+                                                    Nombre de tuteurs :{' '}
+                                                    {post?.tutorsIds.length} /{' '}
+                                                    {post?.tutorsCapacity}
+                                                    <BorderLinearProgress
+                                                        variant="determinate"
+                                                        value={
+                                                            post?.tutors
+                                                                .length *
+                                                            (100 /
+                                                                post?.tutorsCapacity)
+                                                        }
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        )}
+                                        {post?.type == 'tuteur' && (
+                                            <Grid item>
+                                                <Divider variant="middle" />
+                                            </Grid>
+                                        )}
 
-                                            {post?.type == 'tuteur' && (
+                                        {post?.type == 'tuteur' && (
+                                            <Grid
+                                                item
+                                                container
+                                                direction="column"
+                                                spacing={2}
+                                            >
+                                                <Grid item>
+                                                    <Typography variant="h5">
+                                                        Liste des tuteurs :
+                                                    </Typography>
+                                                </Grid>
+
                                                 <Grid
                                                     item
                                                     container
-                                                    direction="column"
                                                     spacing={2}
+                                                    direction="row"
+                                                    style={{
+                                                        overflow: 'scroll',
+                                                        maxHeight: 200,
+                                                    }}
                                                 >
-                                                    <Grid item>
-                                                        <Typography variant="h5">
-                                                            Liste des tuteurs :
-                                                        </Typography>
-                                                    </Grid>
-
-                                                    <Grid
-                                                        item
-                                                        container
-                                                        spacing={2}
-                                                        direction="row"
-                                                        style={{
-                                                            overflowX: 'scroll',
-                                                        }}
-                                                    >
-                                                        {post?.tutors?.map(
-                                                            (tuteurProfil) => (
-                                                                <Grid item xs>
-                                                                    <Card
-                                                                        style={{
-                                                                            border:
-                                                                                '2px ridge black',
-                                                                        }}
-                                                                    >
-                                                                        <CardContent
-                                                                            style={{
-                                                                                maxWidth: 300,
-                                                                            }}
-                                                                        >
-                                                                            <Typography variant="h5">
-                                                                                {
-                                                                                    tuteurProfil.firstName
-                                                                                }{' '}
-                                                                                {tuteurProfil.lastName.toUpperCase()}{' '}
-                                                                                (
-                                                                                <a
-                                                                                    href={`mailto:${tuteurProfil.email}?subject=Tutor'insa`}
-                                                                                >
-                                                                                    {
-                                                                                        post
-                                                                                            ?.creator
-                                                                                            .email
-                                                                                    }
-                                                                                </a>
-                                                                                )
-                                                                            </Typography>
-                                                                            <Typography
-                                                                                variant="h6"
-                                                                                component="h2"
-                                                                                color="textSecondary"
-                                                                                gutterBottom
-                                                                            >
-                                                                                {
-                                                                                    tuteurProfil
-                                                                                        .year
-                                                                                        .name
-                                                                                }
-
-                                                                                ,{' '}
-                                                                                {
-                                                                                    tuteurProfil
-                                                                                        .department
-                                                                                        .name
-                                                                                }
-                                                                                <br />
-                                                                                Nombre
-                                                                                de
-                                                                                post(s)
-                                                                                :{' '}
-                                                                                {
-                                                                                    tuteurProfil
-                                                                                        .createdPostsIds
-                                                                                        .length
-                                                                                }
-                                                                            </Typography>
-                                                                        </CardContent>
-                                                                    </Card>
-                                                                </Grid>
-                                                            )
-                                                        )}
-                                                    </Grid>
-                                                </Grid>
-                                            )}
-
-                                            {subscribtionState.isAuthor &&
-                                                post?.type == 'tuteur' && (
-                                                    <Grid item>
-                                                        <Button
-                                                            variant="contained"
-                                                            color="primary"
-                                                            endIcon={
-                                                                <PeopleAltIcon />
-                                                            }
-                                                            onClick={() =>
-                                                                setStudentListState(
-                                                                    {
-                                                                        ...studentListState,
-                                                                        toggleStudentList: true,
-                                                                    }
-                                                                )
-                                                            }
-                                                        >
-                                                            Liste des étudiants
-                                                        </Button>
-                                                        <Popover
-                                                            style={{
-                                                                padding: '2%',
-                                                            }}
-                                                            open={
-                                                                studentListState.toggleStudentList
-                                                            }
-                                                            onClose={() =>
-                                                                setStudentListState(
-                                                                    {
-                                                                        ...studentListState,
-                                                                        toggleStudentList: false,
-                                                                    }
-                                                                )
-                                                            }
-                                                            anchorOrigin={{
-                                                                vertical:
-                                                                    'center',
-                                                                horizontal:
-                                                                    'center',
-                                                            }}
-                                                            transformOrigin={{
-                                                                vertical:
-                                                                    'center',
-                                                                horizontal:
-                                                                    'center',
-                                                            }}
-                                                        >
-                                                            <Grid
-                                                                container
-                                                                direction="column"
-                                                                justify="space-evenly"
-                                                                style={{
-                                                                    padding:
-                                                                        '5%',
-                                                                }}
-                                                            >
-                                                                <Typography
-                                                                    gutterBottom
-                                                                    variant="h3"
-                                                                >
-                                                                    Liste des
-                                                                    étudiants
-                                                                    inscrits
-                                                                </Typography>
-
-                                                                <TableContainer
-                                                                    component={
-                                                                        Paper
-                                                                    }
+                                                    {post?.tutors?.map(
+                                                        (tuteurProfil) => (
+                                                            <Grid item xs>
+                                                                <Card
                                                                     style={{
                                                                         border:
-                                                                            '1px solid black',
+                                                                            '2px ridge black',
                                                                     }}
                                                                 >
-                                                                    <Table>
-                                                                        <TableHead>
-                                                                            <TableRow>
-                                                                                <TableCell align="center">
-                                                                                    Nom
-                                                                                </TableCell>
-                                                                                <TableCell align="center">
-                                                                                    Prénom
-                                                                                </TableCell>
-                                                                                <TableCell align="center">
-                                                                                    Email
-                                                                                </TableCell>
-                                                                                <TableCell align="center">
-                                                                                    Année
-                                                                                </TableCell>
-                                                                                <TableCell align="center">
-                                                                                    Spécialité
-                                                                                </TableCell>
-                                                                            </TableRow>
-                                                                        </TableHead>
-                                                                        <TableBody>
-                                                                            {studentListState.studentsList?.map(
-                                                                                (
-                                                                                    row,
-                                                                                    index
-                                                                                ) => (
-                                                                                    <TableRow
-                                                                                        key={
-                                                                                            index
-                                                                                        }
-                                                                                    >
-                                                                                        {' '}
-                                                                                        <TableCell
-                                                                                            align="center"
-                                                                                            component="th"
-                                                                                            scope="row"
-                                                                                        >
-                                                                                            {
-                                                                                                row.lastName
-                                                                                            }
-                                                                                        </TableCell>
-                                                                                        <TableCell
-                                                                                            align="center"
-                                                                                            component="th"
-                                                                                            scope="row"
-                                                                                        >
-                                                                                            {
-                                                                                                row.firstName
-                                                                                            }
-                                                                                        </TableCell>
-                                                                                        <TableCell align="center">
-                                                                                            {
-                                                                                                row.email
-                                                                                            }
-                                                                                        </TableCell>
-                                                                                        <TableCell align="center">
-                                                                                            {
-                                                                                                row
-                                                                                                    .year
-                                                                                                    .name
-                                                                                            }
-                                                                                        </TableCell>
-                                                                                        <TableCell align="center">
-                                                                                            {
-                                                                                                row
-                                                                                                    .department
-                                                                                                    .name
-                                                                                            }
-                                                                                        </TableCell>
-                                                                                    </TableRow>
-                                                                                )
-                                                                            )}
-                                                                        </TableBody>
-                                                                    </Table>
-                                                                </TableContainer>
+                                                                    <CardContent
+                                                                        style={{
+                                                                            maxWidth: 300,
+                                                                        }}
+                                                                    >
+                                                                        <Typography variant="h5">
+                                                                            {
+                                                                                tuteurProfil.firstName
+                                                                            }{' '}
+                                                                            {tuteurProfil.lastName.toUpperCase()}{' '}
+                                                                            (
+                                                                            <a
+                                                                                href={`mailto:${tuteurProfil.email}?subject=Tutor'insa`}
+                                                                            >
+                                                                                {
+                                                                                    post
+                                                                                        ?.creator
+                                                                                        .email
+                                                                                }
+                                                                            </a>
+                                                                            )
+                                                                        </Typography>
+                                                                        <Typography
+                                                                            variant="h6"
+                                                                            component="h2"
+                                                                            color="textSecondary"
+                                                                            gutterBottom
+                                                                        >
+                                                                            {
+                                                                                tuteurProfil
+                                                                                    .year
+                                                                                    .name
+                                                                            }
+                                                                            ,{' '}
+                                                                            {
+                                                                                tuteurProfil
+                                                                                    .department
+                                                                                    .name
+                                                                            }
+                                                                            <br />
+                                                                            Nombre
+                                                                            de
+                                                                            post(s)
+                                                                            :{' '}
+                                                                            {
+                                                                                tuteurProfil
+                                                                                    .createdPostsIds
+                                                                                    .length
+                                                                            }
+                                                                        </Typography>
+                                                                    </CardContent>
+                                                                </Card>
                                                             </Grid>
-                                                        </Popover>
-                                                    </Grid>
-                                                )}
-                                        </Grid>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
+                                                        )
+                                                    )}
+                                                </Grid>
+                                            </Grid>
+                                        )}
+
+                                        {subscribtionState.isAuthor &&
+                                            post?.type == 'tuteur' && (
+                                                <Grid item>
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        endIcon={
+                                                            <PeopleAltIcon />
+                                                        }
+                                                        onClick={() =>
+                                                            setStudentListState(
+                                                                {
+                                                                    ...studentListState,
+                                                                    toggleStudentList: true,
+                                                                }
+                                                            )
+                                                        }
+                                                    >
+                                                        Liste des étudiants
+                                                    </Button>
+                                                    <Popover
+                                                        style={{
+                                                            padding: '2%',
+                                                        }}
+                                                        open={
+                                                            studentListState.toggleStudentList
+                                                        }
+                                                        onClose={() =>
+                                                            setStudentListState(
+                                                                {
+                                                                    ...studentListState,
+                                                                    toggleStudentList: false,
+                                                                }
+                                                            )
+                                                        }
+                                                        anchorOrigin={{
+                                                            vertical: 'center',
+                                                            horizontal:
+                                                                'center',
+                                                        }}
+                                                        transformOrigin={{
+                                                            vertical: 'center',
+                                                            horizontal:
+                                                                'center',
+                                                        }}
+                                                    >
+                                                        <Grid
+                                                            container
+                                                            direction="column"
+                                                            justify="space-evenly"
+                                                            style={{
+                                                                padding: '5%',
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                gutterBottom
+                                                                variant="h3"
+                                                            >
+                                                                Liste des
+                                                                étudiants
+                                                                inscrits
+                                                            </Typography>
+
+                                                            <TableContainer
+                                                                component={
+                                                                    Paper
+                                                                }
+                                                                style={{
+                                                                    border:
+                                                                        '1px solid black',
+                                                                }}
+                                                            >
+                                                                <Table>
+                                                                    <TableHead>
+                                                                        <TableRow>
+                                                                            <TableCell align="center">
+                                                                                Nom
+                                                                            </TableCell>
+                                                                            <TableCell align="center">
+                                                                                Prénom
+                                                                            </TableCell>
+                                                                            <TableCell align="center">
+                                                                                Email
+                                                                            </TableCell>
+                                                                            <TableCell align="center">
+                                                                                Année
+                                                                            </TableCell>
+                                                                            <TableCell align="center">
+                                                                                Spécialité
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                    </TableHead>
+                                                                    <TableBody>
+                                                                        {studentListState.studentsList?.map(
+                                                                            (
+                                                                                row,
+                                                                                index
+                                                                            ) => (
+                                                                                <TableRow
+                                                                                    key={
+                                                                                        index
+                                                                                    }
+                                                                                >
+                                                                                    {' '}
+                                                                                    <TableCell
+                                                                                        align="center"
+                                                                                        component="th"
+                                                                                        scope="row"
+                                                                                    >
+                                                                                        {
+                                                                                            row.lastName
+                                                                                        }
+                                                                                    </TableCell>
+                                                                                    <TableCell
+                                                                                        align="center"
+                                                                                        component="th"
+                                                                                        scope="row"
+                                                                                    >
+                                                                                        {
+                                                                                            row.firstName
+                                                                                        }
+                                                                                    </TableCell>
+                                                                                    <TableCell align="center">
+                                                                                        {
+                                                                                            row.email
+                                                                                        }
+                                                                                    </TableCell>
+                                                                                    <TableCell align="center">
+                                                                                        {
+                                                                                            row
+                                                                                                .year
+                                                                                                .name
+                                                                                        }
+                                                                                    </TableCell>
+                                                                                    <TableCell align="center">
+                                                                                        {
+                                                                                            row
+                                                                                                .department
+                                                                                                .name
+                                                                                        }
+                                                                                    </TableCell>
+                                                                                </TableRow>
+                                                                            )
+                                                                        )}
+                                                                    </TableBody>
+                                                                </Table>
+                                                            </TableContainer>
+                                                        </Grid>
+                                                    </Popover>
+                                                </Grid>
+                                            )}
+                                    </Grid>
+                                </CardContent>
+                            </Card>
                         </Grid>
                     </Grid>
                     <EditPost

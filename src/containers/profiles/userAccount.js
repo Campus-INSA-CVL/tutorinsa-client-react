@@ -27,6 +27,7 @@ import {
     Tab,
     Switch,
     FormControlLabel,
+    useMediaQuery
 } from '@material-ui/core'
 import useStyles, {
     containerVariants,
@@ -58,6 +59,10 @@ function Alert(props) {
 
 export default function UserAccount(props) {
     const classes = useStyles()
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
+
     const { authState } = useContext(AuthContext)
     const { userData, dispatchUserData } = useContext(UserContext)
     const { apiState, dispatchApiData } = useContext(ApiContext)
@@ -390,7 +395,7 @@ export default function UserAccount(props) {
     }, [userSubscribedPostsStatus, userSubscribedPostsData])
 
     useEffect(() => {
-        console.log('filtered : ',filteredSubscribedData)
+        console.log('filtered : ', filteredSubscribedData)
     }, [filteredSubscribedData])
     useEffect(() => {
         if (userPostsStatus == 'error')
@@ -1157,7 +1162,7 @@ export default function UserAccount(props) {
                     >
                         <Tab
                             label={
-                                <Typography variant="h4">
+                                <Typography variant={isMobile ? 'h6' : 'h4'}>
                                     Mes Annonces
                                 </Typography>
                             }
@@ -1165,7 +1170,7 @@ export default function UserAccount(props) {
                         />
                         <Tab
                             label={
-                                <Typography variant="h4">
+                                <Typography variant={isMobile ? 'h6' : 'h4'}>
                                     Mes Abonnements
                                 </Typography>
                             }

@@ -32,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1.25em',
     },
     postList: {
-        flex: 3,
+        flex: 0.7,
+        height: 'fit-content',
+        margin: 'auto',
     },
     sortBar: {
         maxHeight: '7.5vh',
@@ -49,15 +51,16 @@ const useStyles = makeStyles((theme) => ({
     gridPostList: {
         overflowY: 'scroll',
         overflowX: 'hidden',
-        flex: 1,
+        height: '95%',
+        padding: '1%',
     },
     root: {
-        height: '100vh',
+        height: '100%',
     },
     gridGeneral: {
         flex: 1,
-        margin: '1%',
         width: 'auto',
+        height: 'inherit',
     },
     navlink: {
         textDecoration: 'none',
@@ -78,5 +81,26 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#4e73df',
     },
+    sortPannel: {
+        flex: 0.25,
+        margin: 'auto',
+    },
+    speedDial: {
+        position: 'absolute',
+        '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
+        },
+    },
+    dialogTransparency: {
+        margin: '1%',
+        background: 'rgba(255,255,255,0.1)',
+        border: 'solid 1px black',
+        borderRadius: '2%',
+    },
+    dialog: {
+        backdropFilter: 'blur(10px)',
+    },
+
 }))
 export default useStyles

@@ -66,8 +66,7 @@ export default function SignUp() {
             animate="visible"
             exit="exit"
         >
-            <CssBaseline />
-            <IconButton color="inherit" aria-label="menu">
+            <IconButton color="inherit" className={classes.center}>
                 <NavLink to="/">
                     <img
                         className={classes.img}

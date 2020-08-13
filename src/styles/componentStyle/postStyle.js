@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         height: '100%',
-        padding: '1%',
     },
     navlink: {
         textDecoration: 'none',
@@ -38,18 +37,15 @@ const useStyles = makeStyles((theme) => ({
     commentaryBox: {
         //padding:"2%",
         flex: 0.6,
+        maxWidth:"40%",
+        margin : "auto"
     },
     infoGrid: {
         //padding:"2%",
         flex: 0.4,
+        maxWidth:"30%"
     },
     icon: {
-        fontSize: '1.5rem',
-    },
-    detailGrid: {
-        padding: '5%',
-        minHeight: 500,
-        minWidth: 450,
         fontSize: '1.5rem',
     },
     backdrop: {

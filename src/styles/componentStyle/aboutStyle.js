@@ -25,7 +25,8 @@ export const containerVariants = {
 const useStyles = makeStyles({
     root: {
         height: "100%",
-        width: "auto"
+        width: "auto",
+        overflowY: "scroll"
     },
     navlink: {
         textDecoration: 'none',

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useMediaQuery } from '@material-ui/core'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Stepper from '@material-ui/core/Stepper'
@@ -19,13 +20,13 @@ export const ColorlibConnector = withStyles({
     active: {
         '& $line': {
             backgroundImage:
-                'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+                'linear-gradient(180deg,#4e73df 10%,#224abe 100%)',
         },
     },
     completed: {
         '& $line': {
             backgroundImage:
-                'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+                'linear-gradient(180deg,#4e73df 10%,#224abe 100%)',
         },
     },
     line: {
@@ -50,25 +51,28 @@ export const useColorlibStepIconStyles = makeStyles({
     },
     active: {
         backgroundImage:
-            'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+            'linear-gradient(180deg,#4e73df 10%,#224abe 100%)',
         boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
     },
     completed: {
         backgroundImage:
-            'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+            'linear-gradient(180deg,#4e73df 10%,#224abe 100%)',
     },
 })
 
 export function ColorlibStepIcon(props) {
     const classes = useColorlibStepIconStyles()
     const { active, completed } = props
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
 
     const icons = {
-        1: <LocationCityIcon />,
-        2: <EventIcon />,
-        3: <RoomIcon />,
-        4: <TimelapseIcon />,
-        5: <MessageIcon />,
+        1: <LocationCityIcon fontSize={isMobile ? 'small' : 'medium'} />,
+        2: <EventIcon fontSize={isMobile ? 'small' : 'medium'} />,
+        3: <RoomIcon fontSize={isMobile ? 'small' : 'medium'} />,
+        4: <TimelapseIcon fontSize={isMobile ? 'small' : 'medium'} />,
+        5: <MessageIcon fontSize={isMobile ? 'small' : 'medium'} />,
     }
 
     return (

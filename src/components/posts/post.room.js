@@ -135,13 +135,13 @@ const RoomForm = (props) => {
 
     const setRoom = (e) => {
         const roomObject = apiState?.roomsList?.filter(
-            (room) => room?._id === e.target.value._id
+            (room) => room?._id === e.target.value
         )[0]
 
         props.dispatchMethod({
             type: 'ROOM',
             payload: {
-                roomId: e.target.value,
+                roomId: roomObject,
             },
         })
     }

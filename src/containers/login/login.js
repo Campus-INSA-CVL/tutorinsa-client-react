@@ -42,7 +42,10 @@ export default function Login(props) {
     })
     const [showErrorLogin, setErrorLogin] = useState(false)
 
-    const isMobile = useMediaQuery('(max-height : 570px)')
+    const isMobile = useMediaQuery(
+        `(max-width:${process.env.REACT_APP_MOBILE_LENGTH}px)`
+    )
+
     const { authState, dispatchAuth } = useContext(AuthContext) //authState.isAuth handle the auth state !
     const { userData, dispatchUserData } = useContext(UserContext)
     const { apiState, dispatchApiData } = useContext(ApiContext)
@@ -54,8 +57,6 @@ export default function Login(props) {
 
     const { data, status, error, create } = useMutation('authentication', {
         strategy: 'local',
-        email: state.email,
-        password: state.password,
     })
 
     const validate = () => {
@@ -75,11 +76,30 @@ export default function Login(props) {
         setState({ ...state, ...errors })
         if (!error) {
             setState({ ...state, loadingLogIn: true })
-            create({
-                strategy: 'local',
-                email: state.email,
-                password: state.password,
-            }) //start loading animation and the queryFetching
+            //figbird hook doesn't seems to handle the strategy field to store the token into localStorage
+            // so now we use the old client from feathers client interface, TO FIX
+            client
+                .authenticate({
+                    email: state.email,
+                    password: state.password,
+                    strategy: 'local',
+                })
+                .then((res) => {
+                    setState({ ...state, loadingLogIn: true })
+                    dispatchAuth({ type: 'LOG_IN' })
+                    dispatchUserData({
+                        type: 'GET_USER_INFO',
+                        payload: res.user,
+                    })
+                    props.setNotifAuth(true)
+                })
+                .catch((err) => {
+                    setState({
+                        ...state,
+                        loadingLogIn: false,
+                    })
+                    setErrorLogin(true)
+                })
         }
     }
 
@@ -134,11 +154,7 @@ export default function Login(props) {
             className={classes.root}
         >
             <Container className={classes.root} component="main" maxWidth="lg">
-                <IconButton
-                    className={classes.center}
-                    color="inherit"
-                    aria-label="menu"
-                >
+                <IconButton className={classes.center} color="inherit">
                     <NavLink to="/">
                         <img
                             className={classes.img}
@@ -148,7 +164,11 @@ export default function Login(props) {
                     </NavLink>
                 </IconButton>
                 <CssBaseline />
-                <Card className={classes.paper}>
+                <Card className={classes.paper} style={
+                    isMobile ? {
+                        overflowY: "scroll"
+                    } : {}
+                }>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
