@@ -120,6 +120,7 @@ export default function PasswordReset() {
                     {state.status == 1
                         ? (
                               <SendPasswordReset
+                                  open={state.status == 1}
                                   text="L'email de réinitialisation du mot de passe a bien été envoyé ! 
                          Retrouvez le dans votre boîte mail INSA !"
                                   reason="success"
@@ -127,6 +128,7 @@ export default function PasswordReset() {
                           ) && setState({ ...state, status: 0 })
                         : state.status == 2 && (
                               <SendPasswordReset
+                                  open={state.status == 2}
                                   text="L'adresse email INSA entrée n'est pas liée à Tutorinsa. Si celle-ci figure correspond pourtant 
                                 bien à votre adresse, veuillez contacter la maintenance du site."
                                   reason="error"
