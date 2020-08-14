@@ -1,7 +1,12 @@
 <p align="center">
 <img src="./public/../src/images/logo_tutorat.png" alt="Tutorinsa logo" align="center" style="width:320px">
+
+
+![GitHub](https://img.shields.io/github/license/Campus-INSA-CVL/tutorinsa-client-react)
+![Update packages](https://github.com/Campus-INSA-CVL/tutorinsa-client-react/workflows/Update%20packages/badge.svg)
+![GitHub deployments](https://img.shields.io/github/deployments/CAMPUS-INSA-CVL/tutorinsa-client-react/github-pages)
+
 </p>
-<br />
 
 <div align="center">
 
