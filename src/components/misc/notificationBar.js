@@ -135,7 +135,7 @@ export const SendPasswordReset = (props) => {
         <Snackbar
             open={props.open}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            autoHideDuration={3000}
+            autoHideDuration={2000}
             onClose={() => setOpen(false)}
         >
             <AlertModified

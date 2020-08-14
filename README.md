@@ -35,12 +35,15 @@ rest-client}** : fetcher de l'API
 
 ## Procédure pour démarer le serveur en développement : 
 
+1) Premièrement, installer les dépendences nécessaires : 
+
 ```bash
 cd tutorinsa-client-react
 npm install
 npm start
 ```
 
+2) Ensuite, créer le fichier **.env** en utilisant le ficher **.env.local** comme modèle, suivre les indications sous forme de commentaires !  
 
 ## A venir 
 
